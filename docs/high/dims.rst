@@ -7,7 +7,7 @@ Datasets are multidimensional arrays. HDF5 provides support for labeling the
 dimensions and associating one or more "dimension scales" with each dimension. A
 dimension scale is simply another HDF5 dataset. In principle, the length of the
 multidimensional array along the dimension of interest should be equal to the
-length of the dimension scale, but HDF5 does not enforce this property.
+length of the dimension scale, but HDF5 does not enforce this property. 
 
 The HDF5 library provides the H5DS API for working with dimension scales. H5py
 provides low-level bindings to this API in :mod:`h5py.h5ds`. These low-level
@@ -90,3 +90,12 @@ such that::
 though, beware that if you attempt to index the dimension scales with a string,
 the first dimension scale whose name matches the string is the one that will be
 returned. There is no guarantee that the name of the dimension scale is unique.
+
+
+
+Nested dimension scales are not permitted: if a dataset has a dimension scale 
+attached to it, converting the dataset to a dimension scale will fail, since the  
+`HDF5 specification doesn't allow this <https://confluence.hdfgroup.org/display/HDF5/H5DS_SET_SCALE>`_. ::
+
+   >>> f['data'].make_scale()
+   RuntimeError: Unspecified error in H5DSset_scale (return value <0)
